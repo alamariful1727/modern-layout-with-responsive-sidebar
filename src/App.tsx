@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { isAuthenticate } from "./stores/UtilsActions";
+import { SignIn } from "./pages/signin";
+import { Home } from "./pages/home";
+import { Layout } from "./components/Layout";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const PrivateRoute = (props: {
+	component: any;
+	path: string;
+	exact: boolean;
+}) => {
+	return (
+		<Route
+			path={props.path}
+			exact={props.exact}
+			render={() =>
+				isAuthenticate() ? (
+					<Layout Component={props.component} />
+				) : (
+					<Redirect to='/signin' />
+				)
+			}
+		/>
+	);
+};
 
-export default App;
+export const App = () => (
+	<BrowserRouter>
+		<Switch>
+			<Route
+				exact
+				path='/signin'
+				render={() => (isAuthenticate() ? <Redirect to='/' /> : <SignIn />)}
+			/>
+			<PrivateRoute path='/' exact={true} component={Home} />
+		</Switch>
+	</BrowserRouter>
+);
