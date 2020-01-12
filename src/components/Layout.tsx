@@ -76,6 +76,7 @@ const LayoutComponent = (props: LayoutInternalProps) => {
 						<div
 							className='relative'
 							style={{
+								transition: "width 0.4s",
 								width: props.rightSidebarOpen ? "30%" : "0%",
 								zIndex: 5
 							}}
@@ -84,7 +85,8 @@ const LayoutComponent = (props: LayoutInternalProps) => {
 								id='rightSidebar'
 								className='h-100 c-tigrowWhite'
 								style={{
-									background: "rgb(6, 5, 23)"
+									background: "rgb(6, 5, 23)",
+									opacity: props.rightSidebarOpen ? "1" : "0"
 								}}
 							></div>
 						</div>
